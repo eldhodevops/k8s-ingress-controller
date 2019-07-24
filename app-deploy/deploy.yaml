@@ -1,0 +1,43 @@
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-hub
+  namespace: default
+spec:
+  replicas: 1
+  minReadySeconds: 80
+  selector:
+    matchLabels:
+      service: nginx-hub
+  template:
+    metadata:
+      labels:
+        app: nginx-hub
+        service: nginx-hub
+    spec:
+      containers:
+      - name: nginx-hub
+        image: nginxdemos/hello
+        imagePullPolicy: Always
+        ports:
+        - name: nginx-hub
+          containerPort: 80
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-hub
+spec:
+  ports:
+    - name: nginx-hub
+      port: 80
+      protocol: TCP
+      targetPort: nginx-hub
+  selector:
+    app: nginx-hub
+        
+        
